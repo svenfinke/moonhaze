@@ -2,6 +2,10 @@ import { GameController } from "./controller/gameController";
 import { ControlerManager } from "./controllerManager/controllerManager";
 
 let controllerManager = new ControlerManager();
-controllerManager.registerController('/', new GameController());
+let gameController = new GameController()
+controllerManager.registerController('game', gameController);
+controllerManager.registerController('index', gameController);
 
-controllerManager.render('/');
+let path = process.argv[2] ? process.argv[2] : '/';
+
+controllerManager.render(path);

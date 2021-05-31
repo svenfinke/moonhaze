@@ -11,6 +11,9 @@
   "license": "ISC",
   "devDependencies": {
     "tslint": "^5.12.1",
-    "typescript": "^3.3.3"
+    "typescript": "^3.9"
+  },
+  "dependencies": {
+    "@google-cloud/datastore": "^6.4.0"
   }
 }
