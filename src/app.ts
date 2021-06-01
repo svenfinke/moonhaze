@@ -1,11 +1,12 @@
 import { GameController } from "./controller/gameController";
 import { ControlerManager } from "./controllerManager/controllerManager";
+import { CliRequest } from "./types/cliRequest";
 
 let controllerManager = new ControlerManager();
 let gameController = new GameController()
 controllerManager.registerController('game', gameController);
 controllerManager.registerController('index', gameController);
 
-let path = process.argv[2] ? process.argv[2] : '/';
+let request = new CliRequest(process.argv);
 
-controllerManager.render(path);
+controllerManager.render(request);

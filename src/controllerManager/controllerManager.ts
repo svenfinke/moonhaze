@@ -1,4 +1,5 @@
 import { Controller } from "../controller/controller";
+import { IRequest } from "../types/request";
 
 export class ControlerManager{
     controllers: { [path: string]: Controller } = {};
@@ -7,27 +8,11 @@ export class ControlerManager{
         this.controllers[path] = controller;
     }
 
-    render(path: string): void{
-        let parsedPath = this.parsePath(path);
-        this.controllers[parsedPath.controller]
-            .render(parsedPath.action, parsedPath.arguments);
-    }
+    render(request: IRequest): void{
+        let controller = this.controllers[request.controller];
 
-    private parsePath(path: string): {
-        controller:string,
-        action: string,
-        arguments: string[]
-    }{
-        if (path[0] == '/') {
-            path = path.slice(1);
-        }
-
-        let slicedPath = path.split('/');
-        
-        return {
-            controller: slicedPath[0] ? slicedPath[0] : 'index',
-            action: slicedPath[1] ? slicedPath[1] : 'index',
-            arguments: slicedPath.slice[2] ? slicedPath.slice[2] : []
-        };
+        controller.init();
+        controller.render(request.action, request.parameters);
+        controller.shutdown();
     }
 }
