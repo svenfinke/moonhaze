@@ -6,12 +6,12 @@ export class GameController extends Controller{
 
     constructor(){
         super()
+        this.gamestate = new GamestateType();
         this.actions['index'] = this.indexAction.bind(this);
         this.actions['dashboard'] = this.dashboardAction.bind(this);
     }
 
     init(): void {
-        this.gamestate = new GamestateType();
         this.gamestate.load();
     }
 
