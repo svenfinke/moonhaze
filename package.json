@@ -1,19 +1,28 @@
 {
-  "name": "paperclippy",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "moonhaze",
+  "version": "0.1.0",
+  "description": "A CLI driven stardew valley hommage thingy",
+  "main": "src/app.ts",
   "scripts": {
-    "start": "tsc && node dist/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "ts-node src/app.ts",
+    "test": "mocha -r ts-node/register tests/**/*.test.ts",
+    "coverage": "nyc -r lcov -e .ts -x \"*.test.ts\" npm run test",
+    "testWatcher": "chokidar \"**/*.ts\" -c \"npm test\""
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Sven Finke",
+  "license": "MIT",
   "devDependencies": {
+    "@types/chai": "^4.2.18",
+    "@types/mocha": "^8.2.2",
+    "chai": "^4.3.4",
+    "chokidar-cli": "^2.1.0",
+    "mocha": "^8.4.0",
+    "nyc": "^15.1.0",
     "tslint": "^5.12.1",
     "typescript": "^3.9"
   },
   "dependencies": {
-    "@google-cloud/datastore": "^6.4.0"
+    "@google-cloud/datastore": "^6.4.0",
+    "ts-node": "^10.0.0"
   }
 }

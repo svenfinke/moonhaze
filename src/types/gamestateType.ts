@@ -8,7 +8,7 @@ export class GamestateType extends PersistentType{
         playerLevel: number        
     }
 
-    constructor(){
+    constructor(filename: string = 'gamestate.json'){
         super();
         this.filename = 'gamestate.json';
         this.data = {

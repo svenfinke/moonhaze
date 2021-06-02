@@ -6,14 +6,13 @@ export class GameController extends Controller{
 
     constructor(){
         super()
-        this.actions['index'] = this.indexAction;
-        this.actions['dashboard'] = this.dashboardAction;
+        this.actions['index'] = this.indexAction.bind(this);
+        this.actions['dashboard'] = this.dashboardAction.bind(this);
     }
 
     init(): void {
-        console.log('init');
         this.gamestate = new GamestateType();
-        console.log(this.gamestate.load(), this.gamestate);
+        this.gamestate.load();
     }
 
     shutdown(): void {
@@ -21,12 +20,10 @@ export class GameController extends Controller{
     }
 
     indexAction(): void{
-        console.log('indexAction');
-        console.log(this.gamestate);
         this.gamestate.data.playerLevel = Math.random();
     }
 
     dashboardAction(): void{
-        console.log('dashboardAction');
+        
     }
 }

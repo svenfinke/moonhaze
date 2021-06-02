@@ -1,0 +1,8 @@
+{
+    "lcov.branchCoverage": "simple",
+    "lcov.path": "./coverage/lcov.info",
+    "lcov.watch": [{
+        "pattern": "**/*.ts",
+        "command": "npm run coverage"
+      }]
+}
