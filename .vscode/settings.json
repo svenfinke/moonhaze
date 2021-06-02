@@ -1,8 +1,11 @@
 {
-    "lcov.branchCoverage": "simple",
-    "lcov.path": "./coverage/lcov.info",
-    "lcov.watch": [{
-        "pattern": "**/*.ts",
-        "command": "npm run coverage"
-      }]
+    "coverage-gutters.coverageReportFileName": "./coverage/lcov-report/index.html",
+    "coverage-gutters.showLineCoverage": true,
+    "coverage-gutters.showRulerCoverage": true,
+    "coverage-gutters.coverageFileNames": [
+        "lcov.info"
+    ],
+    "coverage-gutters.manualCoverageFilePaths": [
+        "./coverage/lcov-report/lcov.info"
+    ]
 }
