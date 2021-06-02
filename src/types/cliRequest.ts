@@ -6,7 +6,6 @@ export class CliRequest implements IRequest{
     parameters: {[name:string]:string} = {};
 
     constructor(argv: string[]){
-        // Cut paths
         let args = argv.slice(2);
         if (args.length == 0) {
             return;
@@ -15,23 +14,20 @@ export class CliRequest implements IRequest{
         this.parse(args);
     }
 
-    parse(args: string[]) {
-        if (args[0] != "") {
-            this.controller = args[0];
+    private parse(args: string[]) {
+        this.controller = args[0];
 
-            if (args[1] != "") {
-                this.controller = args[1];
+        if (args[1] != "") {
+            this.action = args[1];
 
-                // Cut controller and action
-                args = args.slice(2);
-                while (args.length != 0) {
-                    args = this.parseParameters(args);
-                }
+            args = args.slice(2);
+            while (args.length != 0) {
+                args = this.parseParameters(args);
             }
         }
     }
 
-    parseParameters(args: string[]): string[]{
+    private parseParameters(args: string[]): string[]{
         if (args[0].slice(0,2) == "--") {
             let param = args[0].slice(2).split("=");
             // --name value

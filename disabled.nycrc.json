@@ -1,0 +1,9 @@
+{
+    "check-coverage": false,
+    "include": [
+      "**/src/**"
+    ],
+    "exclude": [],
+    "reporter": "lcov",
+    "extension": [".ts"]
+  }

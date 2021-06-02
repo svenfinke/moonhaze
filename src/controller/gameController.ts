@@ -6,21 +6,8 @@ export class GameController extends Controller{
 
     constructor(){
         super()
-        this.gamestate = new GamestateType();
-        this.actions['index'] = this.indexAction.bind(this);
+        this.gamestate = GamestateType.getGamestate();
         this.actions['dashboard'] = this.dashboardAction.bind(this);
-    }
-
-    init(): void {
-        this.gamestate.load();
-    }
-
-    shutdown(): void {
-        this.gamestate.persist();
-    }
-
-    indexAction(): void{
-        this.gamestate.data.playerLevel = Math.random();
     }
 
     dashboardAction(): void{

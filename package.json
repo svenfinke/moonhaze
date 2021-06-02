@@ -7,7 +7,7 @@
     "start": "ts-node src/app.ts",
     "test": "mocha -r ts-node/register tests/**/*.test.ts",
     "coverage": "nyc -r lcov -e .ts -x \"**/*.test.ts\" npm test",
-    "coverageWatcher": "chokidar \"**/*.ts\" -c 'nyc -r lcov -e .ts -x \"**/*.test.ts\" npm test'",
+    "coverageWatcher": "chokidar \"**/*.ts\" -c 'nyc -r lcov -e .ts -x \"**/*.test.ts\" -x \"coverage/*\" npm test'",
     "testWatcher": "chokidar \"**/*.ts\" -c \"npm test\""
   },
   "author": "Sven Finke",
