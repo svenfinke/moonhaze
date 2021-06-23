@@ -20,7 +20,15 @@ export class GameController extends Controller{
     }
 
     indexAction(): void{
-        this.gamestate.data.playerLevel = Math.random();
+        // Render Plot
+        this.gamestate.data.plots.forEach((value)=>{
+            var line = '';
+            value.forEach((value)=>{
+                // console.log(value);
+                line += value.getGlyph();
+            })
+            console.log(line);
+        })
     }
 
     dashboardAction(): void{

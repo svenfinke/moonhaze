@@ -1,10 +1,11 @@
 import { PersistentType } from "./persistentType";
+import { EmptyPlot, IPlot, PlotFactory } from "./plotType";
 
 
 
 export class GamestateType extends PersistentType{
     data: {
-        plots: object[]
+        plots: IPlot[][]
         playerLevel: number        
     }
 
@@ -13,14 +14,61 @@ export class GamestateType extends PersistentType{
         this.filename = 'gamestate.json';
         this.data = {
             playerLevel: 1,
-            plots: []
+            plots: this.generatePlots()
         }
     }
+    generatePlots(): IPlot[][] {
+        var plots: IPlot[][] = [];
+        for (let y = 0; y < 10; y++){
+            plots[y] = [];
+            for (let x = 0; x < 10; x++){
+                plots[y][x] = new EmptyPlot({ 'progress': 100 });
+            }
+        }
+
+        return plots;
+    }
     load(): boolean {
-        return this.loadFromFile();
+        let jsonString = this.loadFromFile();
+        if (jsonString == "") return;
+
+        var jsonData = JSON.parse(jsonString);
+
+        // Load static data
+        this.data.playerLevel = jsonData.playerLevel;
+
+        // Load objects
+        var plotFactory = PlotFactory.getFactory();
+        jsonData.plots.forEach((column, y)=>{
+            this.data.plots[y] = [];
+            column.forEach((plot, x)=>{
+                this.data.plots[y][x] = plotFactory.create(plot.className, plot);
+            });
+        });
+
+        // Turn loaded data into objects again
+        return false;
     }
+
     persist(): boolean {
-        return this.persistToFile();
+        // turn data into persistable data
+        var persistableData: any = {};
+
+        // Copy data and replace everything that has to be re-written
+        persistableData = Object.assign(persistableData, this.data)
+        persistableData.plots = [];
+
+        // Write Plots
+        this.data.plots.forEach((column,y)=>{
+            persistableData.plots[y] = [];
+            column.forEach((plot, x)=>{
+                persistableData.plots[y][x] = {
+                    className: plot.className,
+                    args: plot
+                }
+            });
+        })
+
+        return this.persistToFile(JSON.stringify(persistableData));
     }
-    
 }

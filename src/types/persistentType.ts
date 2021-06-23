@@ -3,26 +3,22 @@ import { readFileSync, existsSync, writeFileSync } from "fs";
 
 export abstract class PersistentType {
     key: entity.Key | entity.Key[];
-    data: any;
     filename: string;
 
     abstract persist(): boolean;
     abstract load(): boolean;
     
-    persistToFile(): boolean{
-        let jsonString = JSON.stringify(this.data)
-        writeFileSync(this.filename, jsonString);
+    persistToFile(data: string): boolean{
+        writeFileSync(this.filename, data);
         return false;
     }
 
-    loadFromFile(): boolean{
+    loadFromFile(): string{
         if (existsSync(this.filename)) {
             let file = readFileSync(this.filename, 'utf8');
-            let jsonString = "";
-            this.data = JSON.parse(file);
-            return true;
+            return file;
         }
 
-        return false;
+        return "";
     }
 }
