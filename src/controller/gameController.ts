@@ -1,3 +1,4 @@
+import { terminal, Terminal } from "terminal-kit";
 import { GamestateType } from "../types/gamestateType";
 import { Controller } from "./controller";
 
@@ -8,6 +9,7 @@ export class GameController extends Controller{
         super()
         this.gamestate = GamestateType.getGamestate();
         this.actions['dashboard'] = this.dashboardAction.bind(this);
+        this.actions['index'] = this.indexAction.bind(this);
     }
 
     init(): void {
@@ -19,6 +21,12 @@ export class GameController extends Controller{
     }
 
     indexAction(): void{
+        let term = terminal;
+        term.clear();
+
+        // Render Farm Information
+
+
         // Render Plot
         this.gamestate.data.plots.forEach((value)=>{
             var line = '';
@@ -26,8 +34,10 @@ export class GameController extends Controller{
                 // console.log(value);
                 line += value.getGlyph();
             })
-            console.log(line);
-        })
+            term.green(line+"\n");
+        });
+
+        term.windowTitle("something AWESOME!");
     }
 
     dashboardAction(): void{

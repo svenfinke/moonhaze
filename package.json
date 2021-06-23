@@ -28,6 +28,9 @@
     "typescript": "^3.9"
   },
   "dependencies": {
-    "@google-cloud/datastore": "^6.4.0"
+    "@google-cloud/datastore": "^6.4.0",
+    "@types/terminal-kit": "^1.28.2",
+    "commander": "^2.20.3",
+    "terminal-kit": "^2.1.5"
   }
 }
