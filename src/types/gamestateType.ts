@@ -1,14 +1,20 @@
 import { PersistentType } from "./persistentType";
 import { EmptyPlot, IPlot, PlotFactory } from "./plotType";
 
-
-
 export class GamestateType extends PersistentType{
+    // SINGLETON
+    private static gamestate:GamestateType;
+    static getGamestate(filename: string = 'gamestate.json'): GamestateType{
+        if (this.gamestate == undefined) {
+            this.gamestate = new GamestateType(filename);
+        }
+        return this.gamestate;
+    }
+    
     data: {
         plots: IPlot[][]
         playerLevel: number        
     }
-
     constructor(filename: string = 'gamestate.json'){
         super();
         this.filename = 'gamestate.json';

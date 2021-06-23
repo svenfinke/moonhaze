@@ -6,8 +6,7 @@ export class GameController extends Controller{
 
     constructor(){
         super()
-        this.gamestate = new GamestateType();
-        this.actions['index'] = this.indexAction.bind(this);
+        this.gamestate = GamestateType.getGamestate();
         this.actions['dashboard'] = this.dashboardAction.bind(this);
     }
 

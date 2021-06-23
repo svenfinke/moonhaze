@@ -11,8 +11,6 @@ export class ControlerManager{
     render(request: IRequest): void{
         let controller = this.controllers[request.controller];
 
-        controller.init();
         controller.render(request.action, request.parameters);
-        controller.shutdown();
     }
 }
