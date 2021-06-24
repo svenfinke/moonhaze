@@ -1,80 +1,77 @@
-import { PersistentType } from "./persistentType";
-import { EmptyPlot, IPlot, PlotFactory } from "./plotType";
+import { IRepository } from "../repositories/repository";
+import { ConfigService } from "../services/configService";
+import { ItemType } from "./items/itemType";
+import { StrawberrySeedItem } from "./items/seeds/strawberrySeedItem";
+import { TurnipSeedItem } from "./items/seeds/turnipSeedItem";
+import { EmptyPlot } from "./plots/emptyPlot";
+import { IPlot } from "./plots/plotType";
 
-export class GamestateType extends PersistentType{
+export class GamestateType{
     // SINGLETON
     private static gamestate:GamestateType;
-    static getGamestate(filename: string = 'gamestate.json'): GamestateType{
+    static getGamestate(repository: IRepository = null): GamestateType{
         if (!this.gamestate) {
-            this.gamestate = new GamestateType(filename);
+            if (repository == null) throw Error;
+            this.gamestate = new GamestateType(repository);
         }
         return this.gamestate;
     }
     
-    data: {
-        plots: IPlot[][]
-        playerLevel: number        
+    data: GamestateData
+    repository: IRepository
+
+    save(){
+        this.repository.save(this.data);
     }
-    constructor(filename: string = 'gamestate.json'){
-        super();
-        this.filename = 'gamestate.json';
-        this.data = {
-            playerLevel: 1,
-            plots: this.generatePlots()
+    load(){
+        let loadedData = this.repository.load();
+        if (loadedData) {
+            this.data = this.repository.load();
         }
     }
-    generatePlots(): IPlot[][] {
+
+    private constructor(repository: IRepository){
+        this.data = new GamestateData();
+        
+        this.repository = repository;
+        this.load();
+    }    
+
+    
+}
+
+export class GamestateData{
+    plots: IPlot[][] = []
+    items: ItemType[] = []
+    
+    energy: number = 10;
+    energyMax: number = 20;
+    balance: number = 0
+    day: number = 1
+    farmname: string = "Awesome Farm"
+
+
+    private configService: ConfigService;
+    
+    constructor(){
+        this.configService = ConfigService.getConfigService();
+        this.balance = this.configService.config.startingBalance;
+        this.plots = this.generatePlots();
+
+        let turnipSeeds = new TurnipSeedItem();
+        turnipSeeds.count = 5;
+        this.items.push(turnipSeeds);
+    }
+
+    private generatePlots(): IPlot[][] {
         var plots: IPlot[][] = [];
-        for (let y = 0; y < 10; y++){
+        for (let y = 0; y < this.configService.config.startingPlotRows ; y++){
             plots[y] = [];
-            for (let x = 0; x < 10; x++){
+            for (let x = 0; x < this.configService.config.startingPlotColumns; x++){
                 plots[y][x] = new EmptyPlot({ 'progress': 100 });
             }
         }
 
         return plots;
-    }
-    load(): boolean {
-        let jsonString = this.loadFromFile();
-        if (jsonString == "") return;
-
-        var jsonData = JSON.parse(jsonString);
-
-        // Load static data
-        this.data.playerLevel = jsonData.playerLevel;
-
-        // Load objects
-        var plotFactory = PlotFactory.getFactory();
-        jsonData.plots.forEach((column, y)=>{
-            this.data.plots[y] = [];
-            column.forEach((plot, x)=>{
-                this.data.plots[y][x] = plotFactory.create(plot.className, plot);
-            });
-        });
-
-        // Turn loaded data into objects again
-        return false;
-    }
-
-    persist(): boolean {
-        // turn data into persistable data
-        var persistableData: any = {};
-
-        // Copy data and replace everything that has to be re-written
-        persistableData = Object.assign(persistableData, this.data)
-        persistableData.plots = [];
-
-        // Write Plots
-        this.data.plots.forEach((column,y)=>{
-            persistableData.plots[y] = [];
-            column.forEach((plot, x)=>{
-                persistableData.plots[y][x] = {
-                    className: plot.className,
-                    args: plot
-                }
-            });
-        })
-
-        return this.persistToFile(JSON.stringify(persistableData));
     }
 }

@@ -11,28 +11,8 @@ export class PlotArguments{
     progress: number
 }
 
-export class EmptyPlot implements IPlot{
-    name: string = "empty"
-    progress: number = 100
-    className: string = "emptyPlot"
-
-    constructor(args: PlotArguments){
-        this.progress = args.progress;
-    }
-
-    getGlyph(): string{
-        return '#';
-    }
-    grow(){
-        // Do nothing
-    }
-}
-
 export class PlotFactory{
     static plotFactory: PlotFactory;
-    
-    plotClasses: IPlot[] = [];
-
     static getFactory(): PlotFactory{
         if (!this.plotFactory) {
             this.plotFactory = new PlotFactory();
@@ -41,8 +21,9 @@ export class PlotFactory{
         return this.plotFactory;
     }
 
-    constructor(){
-        this.register('emptyPlot', EmptyPlot);
+    plotClasses: IPlot[] = [];
+
+    private constructor(){
     }
     
     register(className: string, classConstructor: CallableFunction): void{
