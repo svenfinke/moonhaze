@@ -1,12 +1,17 @@
-import { IPlot } from "../plots/plotType";
+export class ItemType{
+    id: string
+    value: number
+    price: number
+    type: string
+    metadata: object | SeedMetadataType
+}
 
-export abstract class ItemType{
-    abstract id(): string
-    abstract name(): string
-    abstract value(): number
-    abstract canBePlanted(): boolean
-    abstract getPlot(): CallableFunction
-    abstract getType(): string
-
-    count: number = 0
+export class SeedMetadataType {
+    growTimeInDays: number
+    produceCount: number
+    produceItem: ItemType | string
+    byproductCount: number = 0
+    byproductItem: ItemType | string | null
+    byproductChance: number = 0
+    Condition: string[] | null
 }

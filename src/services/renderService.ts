@@ -24,13 +24,8 @@ export class RenderService {
         // Render Farm Information
         term(farmname);
         term.moveTo((term.width - date.length), 1, date);
-        term.moveTo((term.width - season.length), 2, season);
+        term.moveTo((term.width - season.length), 2, season);        
 
-        // Render Inventory, Balance and Energy
-        term.progressBar({
-            width: term.width / 2,
-            percent: false
-        })
         term.moveTo(1, 6, balance);
 
         linePos = 7;
@@ -38,7 +33,7 @@ export class RenderService {
             term.moveTo(
                 1, 
                 linePos, 
-                `${this.pad('       ', value.count.toString(), true)} | ${value.name()}`
+                `${this.pad('       ', value.count.toString(), true)} | ${value.item.id}`
             );
             linePos++;
         });

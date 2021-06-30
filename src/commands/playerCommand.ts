@@ -1,4 +1,4 @@
-import { Command } from "commander";
+import commander, { Command } from "commander";
 import { RepositoryFactory } from "../repositories/repository";
 import { RenderService } from "../services/renderService";
 import { GamestateType } from "../types/gamestateType";
@@ -6,30 +6,19 @@ import { GamestateType } from "../types/gamestateType";
 export class PlayerCommand {
     private renderService: RenderService;
     
-    constructor(){
-        this.renderService = new RenderService();
-    }
-
-    addCommand(program: Command){
-        let playerCommand = program.command('player');
-        playerCommand
-            .arguments('<action>')
-            .action(this.actionHandler.bind(this));
-    }
-
-    actionHandler(action, command){
+    constructor(program: Command){
         // Check which Repository to use
         GamestateType.getGamestate(RepositoryFactory.getRepository());
-
-        switch (action) {
-            case 'sleep':
-                this.sleep(command);
-        }
+        this.renderService = new RenderService();
         
-        this.renderService.renderGamestate();
+        let playerCommand = new commander.Command('player');
+        let showCommand = playerCommand.command('show');
+        showCommand.action(this.showHandler.bind(this));
+
+        program.addCommand(playerCommand);
     }
 
-    private sleep(command){
-        
+    showHandler(command){        
+        this.renderService.renderGamestate();
     }
 }

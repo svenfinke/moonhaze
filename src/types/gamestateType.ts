@@ -1,8 +1,6 @@
 import { IRepository } from "../repositories/repository";
 import { ConfigService } from "../services/configService";
 import { ItemType } from "./items/itemType";
-import { StrawberrySeedItem } from "./items/seeds/strawberrySeedItem";
-import { TurnipSeedItem } from "./items/seeds/turnipSeedItem";
 import { EmptyPlot } from "./plots/emptyPlot";
 import { IPlot } from "./plots/plotType";
 
@@ -42,7 +40,7 @@ export class GamestateType{
 
 export class GamestateData{
     plots: IPlot[][] = []
-    items: ItemType[] = []
+    items: { "item": ItemType, "count": number }[] = []
     
     energy: number = 10;
     energyMax: number = 20;
@@ -57,10 +55,6 @@ export class GamestateData{
         this.configService = ConfigService.getConfigService();
         this.balance = this.configService.config.startingBalance;
         this.plots = this.generatePlots();
-
-        let turnipSeeds = new TurnipSeedItem();
-        turnipSeeds.count = 5;
-        this.items.push(turnipSeeds);
     }
 
     private generatePlots(): IPlot[][] {

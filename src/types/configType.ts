@@ -1,4 +1,5 @@
 export class ConfigType {
+    gamestateRepository: string = "memory"
     daysPerYear: number = 84;
 
     // Initial Values
