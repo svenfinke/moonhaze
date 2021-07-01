@@ -4,7 +4,7 @@ import { ShopItemType } from "../types/items/shopItemType";
 export class ItemsService{
     // SINGLETON
     private static itemsService;
-    static getConfigService():ItemsService {
+    static getItemsService():ItemsService {
         if (!this.itemsService) {
             this.itemsService = new ItemsService();
         }

@@ -27,6 +27,9 @@ export class GamestateType{
             this.data = this.repository.load();
         }
     }
+    reset(){
+        this.data = new GamestateData();
+    }
 
     private constructor(repository: IRepository){
         this.data = new GamestateData();
@@ -42,7 +45,7 @@ export class GamestateData{
     plots: IPlot[][] = []
     items: { "item": ItemType, "count": number }[] = []
     
-    energy: number = 10;
+    energy: number = 20;
     energyMax: number = 20;
     balance: number = 0
     day: number = 1
