@@ -1,4 +1,4 @@
-import { expect, should } from "chai";
+import { expect } from "chai";
 import { ItemsService } from "../../src/services/itemsService";
 import { ItemType } from "../../src/types/items/itemType";
 import { ShopItemType } from "../../src/types/items/shopItemType";

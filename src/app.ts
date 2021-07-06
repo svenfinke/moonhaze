@@ -1,11 +1,13 @@
 import { Command } from "commander";
+import { GameCommand } from "./commands/gameCommand";
 import { PlayerCommand } from "./commands/playerCommand";
 import { ShopCommand } from "./commands/shopCommand";
 import { FileRepository } from "./repositories/fileRepository";
 import { InMemoryRepository } from "./repositories/inMemoryRepository";
 import { RepositoryFactory } from "./repositories/repository";
 import { ConfigService } from "./services/configService";
-import { GamestateData, GamestateType } from "./types/gamestateType";
+import { GamestateService } from "./services/gamestateService";
+import { GamestateType } from "./types/gamestateType";
 
 // Set Default Repository
 
@@ -23,6 +25,7 @@ program
 
 new PlayerCommand(program);
 new ShopCommand(program);
+new GameCommand(program);
 
 program.parse(process.argv);
-GamestateType.getGamestate().save();
+GamestateService.getGamestateService().save();

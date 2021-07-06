@@ -5,32 +5,30 @@ import { PlayerService } from "../services/playerService";
 import { RenderService } from "../services/renderService";
 import { GamestateType } from "../types/gamestateType";
 
-export class PlayerCommand {
+export class GameCommand {
     private renderService: RenderService;
-    private playerService: PlayerService;
     
     constructor(program: Command){
         // Check which Repository to use
         GamestateService.getGamestateService(RepositoryFactory.getRepository());
         this.renderService = new RenderService();
-        this.playerService = PlayerService.getPlayerService();
         
-        let playerCommand = new commander.Command('player');
+        let gameCommand = new commander.Command('game');
         // Will probably be moved to a different parent command...
-        let showCommand = playerCommand.command('show');
+        let showCommand = gameCommand.command('show');
         showCommand.action(this.showHandler.bind(this));
 
-        let sleepCommand = playerCommand.command('sleep');
-        sleepCommand.action(this.sleepAction.bind(this));
+        let resetCommand = gameCommand.command('reset');
+        resetCommand.action(this.resetAction.bind(this));
 
-        program.addCommand(playerCommand);
+        program.addCommand(gameCommand);
     }
 
     showHandler(command){        
         this.renderService.renderGamestate();
     }
 
-    sleepAction(command){
-        this.playerService.sleep();
+    resetAction(command){
+        GamestateService.getGamestateService().reset();
     }
 }

@@ -1,8 +1,8 @@
-import { GamestateData } from "../types/gamestateType";
+import { GamestateType } from "../types/gamestateType";
 
 export interface IRepository {
-    load(): GamestateData
-    save(gamestate: GamestateData)
+    load(): GamestateType
+    save(gamestate: GamestateType)
 }
 
 export class RepositoryFactory {

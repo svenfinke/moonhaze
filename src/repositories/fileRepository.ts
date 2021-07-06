@@ -1,6 +1,6 @@
 import { IRepository } from "./repository";
 import { readFileSync, existsSync, writeFileSync } from "fs";
-import { GamestateData } from "../types/gamestateType";
+import { GamestateType } from "../types/gamestateType";
 import { PlotFactory } from "../types/plots/plotType";
 
 export class FileRepository implements IRepository {
@@ -10,8 +10,8 @@ export class FileRepository implements IRepository {
         this.filename = filename;
     }
 
-    load(): GamestateData{
-        let gameStateData = new GamestateData();
+    load(): GamestateType{
+        let gameStateData = new GamestateType();
 
         let jsonString = "";
         if (existsSync(this.filename)) {
@@ -35,7 +35,7 @@ export class FileRepository implements IRepository {
 
         return gameStateData;
     }
-    save(gamestate: GamestateData){
+    save(gamestate: GamestateType){
         // turn data into persistable data
         var persistableData: any = {};
 

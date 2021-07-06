@@ -1,47 +1,9 @@
-import { IRepository } from "../repositories/repository";
 import { ConfigService } from "../services/configService";
 import { ItemType } from "./items/itemType";
 import { EmptyPlot } from "./plots/emptyPlot";
 import { IPlot } from "./plots/plotType";
 
 export class GamestateType{
-    // SINGLETON
-    private static gamestate:GamestateType;
-    static getGamestate(repository: IRepository = null): GamestateType{
-        if (!this.gamestate) {
-            if (repository == null) throw Error;
-            this.gamestate = new GamestateType(repository);
-        }
-        return this.gamestate;
-    }
-    
-    data: GamestateData
-    repository: IRepository
-
-    save(){
-        this.repository.save(this.data);
-    }
-    load(){
-        let loadedData = this.repository.load();
-        if (loadedData) {
-            this.data = this.repository.load();
-        }
-    }
-    reset(){
-        this.data = new GamestateData();
-    }
-
-    private constructor(repository: IRepository){
-        this.data = new GamestateData();
-        
-        this.repository = repository;
-        this.load();
-    }    
-
-    
-}
-
-export class GamestateData{
     plots: IPlot[][] = []
     items: { "item": ItemType, "count": number }[] = []
     
@@ -50,6 +12,7 @@ export class GamestateData{
     balance: number = 0
     day: number = 1
     farmname: string = "Awesome Farm"
+    playername: string = "John Doe";
 
 
     private configService: ConfigService;

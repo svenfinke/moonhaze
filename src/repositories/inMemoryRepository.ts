@@ -1,11 +1,11 @@
-import { GamestateData } from "../types/gamestateType";
+import { GamestateType } from "../types/gamestateType";
 import { IRepository } from "./repository";
 
 export class InMemoryRepository implements IRepository {
-    load(): GamestateData{
-        return new GamestateData();
+    load(): GamestateType{
+        return new GamestateType();
     }
-    save(gamestate: GamestateData){
+    save(gamestate: GamestateType){
         // Don't do anything
     }
 }

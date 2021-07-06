@@ -1,6 +1,8 @@
 import { GamestateType } from "../types/gamestateType";
 import { terminal, Terminal } from "terminal-kit";
 import { ConfigService } from "./configService";
+import { GamestateService } from "./gamestateService";
+import { pad } from "../utilities/renderUtilities";
 
 export class RenderService {
     configService: ConfigService;
@@ -9,48 +11,67 @@ export class RenderService {
         this.configService = ConfigService.getConfigService();
     }
 
-    renderGamestate(){
-        let gamestate = GamestateType.getGamestate();
-        let linePos = 0;
+    renderPlayer(){
+        let gamestateService = GamestateService.getGamestateService();
         let term = terminal;
-        term.clear();
+
+        this.renderHeader();
+    }
+
+    renderGamestate(){
+        let gamestateService = GamestateService.getGamestateService();
+        let term = terminal;
+
+        this.renderHeader();
 
         // Mock Farm Information
-        let date = this.generateDate(gamestate.data.day);
-        let season = this.generateSeason(gamestate.data.day);
-        let farmname = gamestate.data.farmname;
-        let balance = `$ ${gamestate.data.balance.toLocaleString("en-US")}`;
+        let date = this.generateDate(gamestateService.data.day);
+        let season = this.generateSeason(gamestateService.data.day);
+        let farmname = gamestateService.data.farmname;
+        let balance = `$ ${gamestateService.data.balance.toLocaleString("en-US")}`;
 
         // Render Farm Information
-        term(farmname);
-        term.moveTo((term.width - date.length), 1, date);
-        term.moveTo((term.width - season.length), 2, season);        
+        term.left(2000)(farmname);
+        term.left(2000).right(term.width - date.length)(date);
+        term.down(1);
+        term.left(2000).right(term.width - date.length)(season);       
+        term.down(2);
+        
+        term.left(2000);
+        term.saveCursor();
+        term(balance);
 
-        term.moveTo(1, 6, balance);
-
-        linePos = 7;
-        gamestate.data.items.forEach((value)=>{
-            term.moveTo(
-                1, 
-                linePos, 
-                `${this.pad('       ', value.count.toString(), true)} | ${value.item.id}`
-            );
-            linePos++;
+        // Render inventory
+        gamestateService.data.items.forEach((value)=>{
+            term.down(1);
+            term.left(2000);
+            term(`${pad('       ', value.count.toString(), true)} | ${value.item.id}`);
         });
         
         // Render Plot
-        linePos = 5;
-        gamestate.data.plots.forEach((value)=>{
+        term.restoreCursor();
+        gamestateService.data.plots.forEach((value)=>{
             var line = '';
             value.forEach((value)=>{
                 // console.log(value);
                 line += value.getGlyph();
             })
-            term.moveTo.green((term.width - line.length), linePos, line);
-            linePos++;
+            term.left(2000).right(term.width - line.length).green(line);
+            term.down(1);
         });
 
         term("\n");
+    }
+
+    private renderHeader(){
+        let term = terminal;
+        term.clear();
+        // Header
+        term.down(1);
+        for (let index = 0; index < term.width; index++) {
+            term("=");
+        }
+        term.down(2);
     }
 
     private generateDate(day: number): string{
@@ -69,16 +90,6 @@ export class RenderService {
             case 3: return 'Fall';
             case 0: return 'Winter';
             default: return 'Unicornish'
-        }
-    }
-
-    private pad(pad: string, str: string, padLeft: boolean) {
-        if (typeof str === 'undefined') 
-            return pad;
-        if (padLeft) {
-            return (pad + str).slice(-pad.length);
-        } else {
-            return (str + pad).substring(0, pad.length);
         }
     }
 }

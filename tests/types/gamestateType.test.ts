@@ -1,21 +1,21 @@
-import { expect, should } from "chai";
+import { expect } from "chai";
 import { InMemoryRepository } from "../../src/repositories/inMemoryRepository";
-import { GamestateType } from "../../src/types/gamestateType";
+import { GamestateService } from "../../src/services/gamestateService";
 
-describe('GamestateType_Test', () => {
+describe('GamestateService_Test', () => {
     // Generate Gamestate with InMemoryRepository
-    GamestateType.getGamestate(new InMemoryRepository());
+    GamestateService.getGamestateService(new InMemoryRepository());
 
     it('should create gamestate as singleton', () => {
-        let gamestate = GamestateType.getGamestate();
+        let gamestate = GamestateService.getGamestateService();
         gamestate.data.energy += 100;
-        let secondGamestate = GamestateType.getGamestate();
+        let secondGamestate = GamestateService.getGamestateService();
 
         expect(gamestate.data.energy).to.equal(secondGamestate.data.energy);
     });
 
     it('should be able to reset the gamestate', () => {
-        let gamestate = GamestateType.getGamestate();
+        let gamestate = GamestateService.getGamestateService();
         gamestate.data.energy += 100;
         const initialEnergy = gamestate.data.energy;
         gamestate.reset();
