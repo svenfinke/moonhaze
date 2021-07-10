@@ -1,17 +1,14 @@
 import commander, { Command } from "commander";
 import { terminal } from "terminal-kit";
 import { RepositoryFactory } from "../repositories/repository";
-import { GamestateService } from "../services/gamestateService";
-import { ItemsService } from "../services/itemsService";
+import { gamestateServiceSingleton as gamestateService } from "../services/gamestateService";
+import { itemsServiceSingleton as itemsService } from "../services/itemsService";
+import { renderServiceSingleton as renderService } from "../services/renderService";
+import { shopServiceSingleton as shopService } from "../services/shopService";
 import { pad } from "../utilities/renderUtilities";
 
 export class ShopCommand {    
-    itemsService: ItemsService;
     constructor(program: Command){
-        // Check which Repository to use
-        GamestateService.getGamestateService(RepositoryFactory.getRepository());
-        this.itemsService = new ItemsService();
-
         let shopCommand = new commander.Command('shop');
         let listItemsCommand = shopCommand.command('list-items');
         listItemsCommand.action(this.listItemsHandler.bind(this));
@@ -20,25 +17,10 @@ export class ShopCommand {
     }
 
     private listItemsHandler(command){
-        let term = terminal;
-        let shopItems = this.itemsService.getShopItems();
+        renderService.renderTable(shopService.listItems());
+    }
 
-        term.clear();
-        // Header
-        term.down(1);
-        for (let index = 0; index < term.width; index++) {
-            term("=");
-        }
-        term.down(2);
+    private buyItemsHandler(command){
 
-        shopItems.forEach((item)=>{
-            term.left(2000);
-            term(pad('                    ', item.item.id, false));
-            term(' | ');
-            term(pad('       ', item.item.price.toString(), true));
-            term(' $');
-            term.down(1);
-        });
-        term('\n');
     }
 }

@@ -1,16 +1,11 @@
 import commander, { Command } from "commander";
-import { RepositoryFactory } from "../repositories/repository";
-import { GamestateService } from "../services/gamestateService";
-import { PlayerService } from "../services/playerService";
+import { gamestateServiceSingleton as gamestateService } from "../services/gamestateService";
 import { RenderService } from "../services/renderService";
-import { GamestateType } from "../types/gamestateType";
 
 export class GameCommand {
     private renderService: RenderService;
     
     constructor(program: Command){
-        // Check which Repository to use
-        GamestateService.getGamestateService(RepositoryFactory.getRepository());
         this.renderService = new RenderService();
         
         let gameCommand = new commander.Command('game');
@@ -29,6 +24,6 @@ export class GameCommand {
     }
 
     resetAction(command){
-        GamestateService.getGamestateService().reset();
+        gamestateService.reset();
     }
 }

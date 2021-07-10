@@ -2,15 +2,6 @@ import { ItemType } from "../types/items/itemType";
 import { ShopItemType } from "../types/items/shopItemType";
 
 export class ItemsService{
-    // SINGLETON
-    private static itemsService;
-    static getItemsService():ItemsService {
-        if (!this.itemsService) {
-            this.itemsService = new ItemsService();
-        }
-        return this.itemsService;
-    }
-
     private shopItems:ShopItemType[];
     private Items:ItemType[];
 
@@ -79,3 +70,5 @@ export class ItemsService{
         return items;
     }
 }
+
+export const itemsServiceSingleton = new ItemsService();

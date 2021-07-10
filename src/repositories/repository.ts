@@ -1,4 +1,5 @@
 import { GamestateType } from "../types/gamestateType";
+import { FileRepository } from "./fileRepository";
 
 export interface IRepository {
     load(): GamestateType
@@ -6,7 +7,7 @@ export interface IRepository {
 }
 
 export class RepositoryFactory {
-    static repository: IRepository;
+    static repository: IRepository = new FileRepository('gamestate.json')
 
     static setRepository(repository: IRepository){
         this.repository = repository;

@@ -1,4 +1,4 @@
-import { ConfigService } from "../services/configService";
+import { configServiceSingleton as configService } from "../services/configService";
 import { ItemType } from "./items/itemType";
 import { EmptyPlot } from "./plots/emptyPlot";
 import { IPlot } from "./plots/plotType";
@@ -13,21 +13,17 @@ export class GamestateType{
     day: number = 1
     farmname: string = "Awesome Farm"
     playername: string = "John Doe";
-
-
-    private configService: ConfigService;
     
     constructor(){
-        this.configService = ConfigService.getConfigService();
-        this.balance = this.configService.config.startingBalance;
+        this.balance = configService.config.startingBalance;
         this.plots = this.generatePlots();
     }
 
     private generatePlots(): IPlot[][] {
         var plots: IPlot[][] = [];
-        for (let y = 0; y < this.configService.config.startingPlotRows ; y++){
+        for (let y = 0; y < configService.config.startingPlotRows ; y++){
             plots[y] = [];
-            for (let x = 0; x < this.configService.config.startingPlotColumns; x++){
+            for (let x = 0; x < configService.config.startingPlotColumns; x++){
                 plots[y][x] = new EmptyPlot({ 'progress': 100 });
             }
         }

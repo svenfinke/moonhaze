@@ -10,12 +10,20 @@ export function renderHeader(){
     }
     term.down(2);
 }
-export function pad(pad: string, str: string, padLeft: boolean) {
+export function pad(pad: string | number, str: string, padLeft: boolean) {
+    let padString: string;
+
+    if (typeof pad == "string") {
+        padString = pad as string;
+    } else {
+        
+    }
+
     if (typeof str === 'undefined') 
         return pad;
     if (padLeft) {
-        return (pad + str).slice(-pad.length);
+        return (pad + str).slice(-padString.length);
     } else {
-        return (str + pad).substring(0, pad.length);
+        return (str + pad).substring(0, padString.length);
     }
 }

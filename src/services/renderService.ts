@@ -1,25 +1,18 @@
-import { GamestateType } from "../types/gamestateType";
-import { terminal, Terminal } from "terminal-kit";
-import { ConfigService } from "./configService";
-import { GamestateService } from "./gamestateService";
+import { terminal } from "terminal-kit";
+import { configServiceSingleton as configService } from "./configService";
+import { gamestateServiceSingleton as gamestateService } from "./gamestateService";
 import { pad } from "../utilities/renderUtilities";
+import { IPrintable } from "../types/printable";
 
 export class RenderService {
-    configService: ConfigService;
-
-    constructor(){
-        this.configService = ConfigService.getConfigService();
-    }
 
     renderPlayer(){
-        let gamestateService = GamestateService.getGamestateService();
         let term = terminal;
 
         this.renderHeader();
     }
 
     renderGamestate(){
-        let gamestateService = GamestateService.getGamestateService();
         let term = terminal;
 
         this.renderHeader();
@@ -63,6 +56,30 @@ export class RenderService {
         term("\n");
     }
 
+    renderTable(rows: IPrintable[], headers: string[] = []){
+        let term = terminal;
+        let columnWidth = 0;
+        
+        this.renderHeader();
+
+        if (rows.length == 0) {
+            term("No Data \n");
+            return;
+        }
+        if (headers.length != 0) {
+            columnWidth = Math.floor(term.width / headers.length);
+        }
+
+        if (columnWidth == 0) {
+            columnWidth = Math.floor(term.width / rows[0].to_string_array().length);
+        }
+
+        rows.forEach((row)=>{
+            let data = row.to_string_array();
+            pad
+        });
+    }
+
     private renderHeader(){
         let term = terminal;
         term.clear();
@@ -75,13 +92,13 @@ export class RenderService {
     }
 
     private generateDate(day: number): string{
-        let days_per_year: number = this.configService.config.daysPerYear;
+        let days_per_year: number = configService.config.daysPerYear;
         // Generate human readable Date with year
         return `Day ${day%days_per_year}, Year ${Math.ceil(day/days_per_year)}`;
     }
 
     private generateSeason(day: number): string{
-        let days_per_year: number = this.configService.config.daysPerYear;
+        let days_per_year: number = configService.config.daysPerYear;
         let season = Math.ceil(day / ((days_per_year) / 4)) % 4;
 
         switch(season){
@@ -93,3 +110,5 @@ export class RenderService {
         }
     }
 }
+
+export const renderServiceSingleton = new RenderService();
