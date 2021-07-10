@@ -9,10 +9,14 @@ export class ShopItemType implements IPrintable{
     }
 
     to_string_array(): string[]{
-        return []
+        return [
+            this.item.id,
+            this.item.type,
+            this.item.price.toFixed(2) + ' $'
+        ]
     }
 
     print(){
-        console.log("PRINT")
+        console.log(this.item);
     }
 }

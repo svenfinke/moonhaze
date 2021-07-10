@@ -46,7 +46,6 @@ export class RenderService {
         gamestateService.data.plots.forEach((value)=>{
             var line = '';
             value.forEach((value)=>{
-                // console.log(value);
                 line += value.getGlyph();
             })
             term.left(2000).right(term.width - line.length).green(line);
@@ -76,8 +75,15 @@ export class RenderService {
 
         rows.forEach((row)=>{
             let data = row.to_string_array();
-            pad
+            
+            term.left(2000);
+            term.down(1);
+            data.forEach((col)=>{
+                term(pad(columnWidth, col, false));
+            });
         });
+
+        term("\n");
     }
 
     private renderHeader(){

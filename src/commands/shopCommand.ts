@@ -10,8 +10,13 @@ import { pad } from "../utilities/renderUtilities";
 export class ShopCommand {    
     constructor(program: Command){
         let shopCommand = new commander.Command('shop');
+        
         let listItemsCommand = shopCommand.command('list-items');
         listItemsCommand.action(this.listItemsHandler.bind(this));
+
+        let buyItemsCommand = shopCommand.command('buy');
+        buyItemsCommand.argument('<itemId>', 'Item that you want to buy');
+        buyItemsCommand.action(this.buyItemsHandler.bind(this));
 
         program.addCommand(shopCommand);
     }
@@ -20,7 +25,7 @@ export class ShopCommand {
         renderService.renderTable(shopService.listItems());
     }
 
-    private buyItemsHandler(command){
-
+    private buyItemsHandler(itemId, command){
+        shopService.buyItems(itemId, 1);
     }
 }

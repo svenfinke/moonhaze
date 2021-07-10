@@ -69,6 +69,25 @@ export class ItemsService{
 
         return items;
     }
+
+    getItem(itemId: string): ItemType{
+        let result:ItemType;
+        this.ItemData.items.forEach((item)=>{
+            if (item.id == itemId) {
+                result = item;
+            }
+        });
+
+        return result;
+    }
+
+    getShopItem(itemId: string): ShopItemType{
+        let item = this.getItem(itemId);
+        if (!item) return null;
+        return new ShopItemType(item);
+    }
+
+    
 }
 
 export const itemsServiceSingleton = new ItemsService();

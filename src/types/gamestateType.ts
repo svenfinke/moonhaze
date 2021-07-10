@@ -1,11 +1,12 @@
 import { configServiceSingleton as configService } from "../services/configService";
+import { InventoryItemType } from "./items/inventoryItemType";
 import { ItemType } from "./items/itemType";
 import { EmptyPlot } from "./plots/emptyPlot";
 import { IPlot } from "./plots/plotType";
 
 export class GamestateType{
     plots: IPlot[][] = []
-    items: { "item": ItemType, "count": number }[] = []
+    items: InventoryItemType[] = []
     
     energy: number = 20;
     energyMax: number = 20;

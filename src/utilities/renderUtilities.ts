@@ -11,19 +11,21 @@ export function renderHeader(){
     term.down(2);
 }
 export function pad(pad: string | number, str: string, padLeft: boolean) {
-    let padString: string;
+    let padString: string = "";
 
     if (typeof pad == "string") {
         padString = pad as string;
     } else {
-        
+        for (let i = 0; i < (pad as number); i++) {
+            padString += " ";
+        }
     }
 
     if (typeof str === 'undefined') 
-        return pad;
+        return padString;
     if (padLeft) {
-        return (pad + str).slice(-padString.length);
+        return (padString + str).slice(-padString.length);
     } else {
-        return (str + pad).substring(0, padString.length);
+        return (str + padString).substring(0, padString.length);
     }
 }
