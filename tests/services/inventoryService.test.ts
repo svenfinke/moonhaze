@@ -28,7 +28,7 @@ describe('InventoryService_Test', () => {
         let initialCount = inventoryService.get(item).count;
         // Increase by 55
         inventoryService.add(item, 55);
-        expect(inventoryService.get(item).count).to.equal(initialCount + 120, 'Count was not increased by 55.');
+        expect(inventoryService.get(item).count).to.equal(initialCount + 55, 'Count was not increased by 55.');
 
         initialCount = inventoryService.get(item).count;
         // Increase by 23
