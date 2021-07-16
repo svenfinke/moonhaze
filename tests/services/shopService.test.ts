@@ -3,7 +3,9 @@ import { InMemoryRepository } from "../../src/repositories/inMemoryRepository";
 import { RepositoryFactory } from "../../src/repositories/repository";
 import { gamestateServiceSingleton as gamestateService } from "../../src/services/gamestateService";
 import { shopServiceSingleton as shopService } from "../../src/services/shopService";
-import { InsufficientBalanceError, ItemNotFoundError } from "../../src/utilities/exceptions";
+import { InventoryItemType } from "../../src/types/items/inventoryItemType";
+import { ItemType } from "../../src/types/items/itemType";
+import { InsufficientBalanceError, ItemNotFoundError, NotEnoughItemsError } from "../../src/utilities/exceptions";
 
 describe('ShopService_Test', () => {
     RepositoryFactory.setRepository(new InMemoryRepository());
@@ -63,5 +65,40 @@ describe('ShopService_Test', () => {
         gamestateService.reset();
 
         expect(shopService.buyItems.bind(shopService, 'randomItemIdThing')).to.throw(ItemNotFoundError);
+    });
+
+    it('sellItems should fail if itemId is not found', () => {
+        gamestateService.reset();
+
+        expect(shopService.sellItems.bind(shopService, 'randomItemIdThing')).to.throw(ItemNotFoundError);
+    });
+
+    it('sellItems should fail if item count is lower than amount to sell', () => {
+        gamestateService.reset();
+
+        expect(shopService.sellItems.bind(shopService, 'mushroomSeed')).to.throw(NotEnoughItemsError);
+    });
+
+    it('sellItems should increase balance', () => {
+        gamestateService.reset();
+
+        gamestateService.data.balance = 100000;
+        let shopItem = shopService.listItems()[0];
+        shopService.buyItems(shopItem.item.id, 3);
+        gamestateService.data.balance = 0;
+        shopService.sellItems(shopItem.item.id, 2);
+
+        expect(gamestateService.data.items[0].count).to.equal(shopItem.item.value * 2);
+    });
+
+    it('sellItems should decrease item count in inventory', () => {
+        gamestateService.reset();
+
+        gamestateService.data.balance = 100000;
+        let shopItem = shopService.listItems()[0];
+        shopService.buyItems(shopItem.item.id, 3);
+        expect(gamestateService.data.items[0].count).to.equal(3);
+        shopService.sellItems(shopItem.item.id, 2);
+        expect(gamestateService.data.items[0].count).to.equal(1);
     });
 });

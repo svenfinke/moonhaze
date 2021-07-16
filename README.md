@@ -1,4 +1,4 @@
-[![Run Tests](https://github.com/svenfinke/moonhaze/actions/workflows/run-tests.yml/badge.svg)](https://github.com/svenfinke/moonhaze/actions/workflows/run-tests.yml)
+[![Github Test Action](https://github.com/svenfinke/moonhaze/actions/workflows/run-tests.yml/badge.svg)](https://github.com/svenfinke/moonhaze/actions/workflows/run-tests.yml)
 
 # Moonhaze
 
