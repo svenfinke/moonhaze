@@ -1,6 +1,7 @@
 import { ShopItemType } from "../types/items/shopItemType";
 import { InsufficientBalanceError, ItemNotFoundError } from "../utilities/exceptions";
 import { gamestateServiceSingleton as gamestateService } from "./gamestateService";
+import { inventoryServiceSingleton as inventoryService } from "./inventoryService";
 import { itemsServiceSingleton as itemsService } from "./itemsService";
 
 
@@ -21,10 +22,7 @@ export class shopService{
         }
 
         gamestateService.data.balance -= price;
-        gamestateService.data.items.push({
-            item: item.item,
-            count: count
-        });
+        inventoryService.add(item, count);
     }
 }
 
