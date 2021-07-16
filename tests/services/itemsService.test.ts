@@ -1,10 +1,13 @@
 import { expect } from "chai";
-import { ItemsService } from "../../src/services/itemsService";
+import { InMemoryRepository } from "../../src/repositories/inMemoryRepository";
+import { RepositoryFactory } from "../../src/repositories/repository";
+import { itemsServiceSingleton as itemsService } from "../../src/services/itemsService";
 import { ItemType } from "../../src/types/items/itemType";
 import { ShopItemType } from "../../src/types/items/shopItemType";
 
 describe('ItemsService_Test', () => {
-    var itemsService = ItemsService.getItemsService();
+    RepositoryFactory.setRepository(new InMemoryRepository());
+
     it('getShopItems should return an array of shop items without an argument', () => {
         const result = itemsService.getShopItems();
 

@@ -10,7 +10,7 @@ export class InventoryService{
             item = (item as ShopItemType).item;
         }
 
-        let inventoryItem = this.getItem(item);
+        let inventoryItem = this.get(item);
         if (!inventoryItem) {
             gamestateService.data.items.push({
                 item: item,
@@ -26,19 +26,22 @@ export class InventoryService{
             item = (item as ShopItemType).item;
         }
 
-        let inventoryItem = this.getItem(item);
+        let inventoryItem = this.get(item);
         if (!inventoryItem) {
             throw new ItemNotFoundError(`Item ${item.id} not found in your inventory.`);
         }
 
         inventoryItem.count -= count;
+        if (inventoryItem.count <= 0) {
+            this.dump(inventoryItem.item);
+        }
     }
     dump(item: ItemType | ShopItemType){
         if (item instanceof ShopItemType) {
             item = (item as ShopItemType).item;
         }
 
-        let inventoryItem = this.getItem(item);
+        let inventoryItem = this.get(item);
         if (!inventoryItem) {
             throw new ItemNotFoundError(`Item ${item.id} not found in your inventory.`);
         }
@@ -49,8 +52,7 @@ export class InventoryService{
     list(): InventoryItemType[]{
         return gamestateService.data.items;
     }
-
-    private getItem(item: ItemType): InventoryItemType{
+    get(item: ItemType): InventoryItemType{
         for (let inventoryItem of gamestateService.data.items) {
             if (inventoryItem.item.id == item.id) {
                 return inventoryItem;

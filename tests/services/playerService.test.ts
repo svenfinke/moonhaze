@@ -1,14 +1,11 @@
-import { expect, should } from "chai";
+import { expect } from "chai";
 import { InMemoryRepository } from "../../src/repositories/inMemoryRepository";
 import { RepositoryFactory } from "../../src/repositories/repository";
-import { GamestateService } from "../../src/services/gamestateService";
-import { PlayerService } from "../../src/services/playerService";
-import { GamestateType } from "../../src/types/gamestateType";
+import { gamestateServiceSingleton as gamestateService } from "../../src/services/gamestateService";
+import { playerServiceSingleton as playerService } from "../../src/services/playerService";
 
 describe('PlayerService_Test', () => {
     RepositoryFactory.setRepository(new InMemoryRepository());
-    const gamestateService = GamestateService.getGamestateService();
-    var playerService = PlayerService.getPlayerService();
     
     it('sleep should increase day', () => {
         gamestateService.reset();
