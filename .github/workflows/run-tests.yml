@@ -4,4 +4,4 @@ jobs:
   Run-Tests:
     runs-on: ubuntu-latest
     steps:
-      - run: pwd
+      - run: npm install
