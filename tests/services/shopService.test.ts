@@ -73,10 +73,20 @@ describe('ShopService_Test', () => {
         expect(shopService.sellItems.bind(shopService, 'randomItemIdThing')).to.throw(ItemNotFoundError);
     });
 
-    it('sellItems should fail if item count is lower than amount to sell', () => {
+    it('sellItems should fail if item is not in the inventory', () => {
         gamestateService.reset();
 
-        expect(shopService.sellItems.bind(shopService, 'mushroomSeed')).to.throw(NotEnoughItemsError);
+        expect(shopService.sellItems.bind(shopService, 'mushroomSeed')).to.throw(ItemNotFoundError);
+    });
+
+    it('sellItems should fail if not enough items in inventory', () => {
+        gamestateService.reset();
+        gamestateService.data.balance = 200000;
+        let items = shopService.listItems();
+        let item = items[0];
+        shopService.buyItems(item.item.id, 5);
+
+        expect(shopService.sellItems.bind(shopService, 'mushroomSeed', 10)).to.throw(NotEnoughItemsError);
     });
 
     it('sellItems should increase balance', () => {
@@ -88,7 +98,7 @@ describe('ShopService_Test', () => {
         gamestateService.data.balance = 0;
         shopService.sellItems(shopItem.item.id, 2);
 
-        expect(gamestateService.data.items[0].count).to.equal(shopItem.item.value * 2);
+        expect(gamestateService.data.balance).to.equal(shopItem.item.value * 2);
     });
 
     it('sellItems should decrease item count in inventory', () => {

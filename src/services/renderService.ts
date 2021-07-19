@@ -22,17 +22,20 @@ export class RenderService {
         let season = this.generateSeason(gamestateService.data.day);
         let farmname = gamestateService.data.farmname;
         let balance = `$ ${gamestateService.data.balance.toLocaleString("en-US")}`;
+        let energy = `${gamestateService.data.energy}/${gamestateService.data.energyMax}`;
 
         // Render Farm Information
         term.left(2000)(farmname);
         term.left(2000).right(term.width - date.length)(date);
         term.down(1);
+        term.left(2000)(farmname);
         term.left(2000).right(term.width - date.length)(season);       
         term.down(2);
         
         term.left(2000);
         term.saveCursor();
         term(balance);
+    
 
         // Render inventory
         gamestateService.data.items.forEach((value)=>{
