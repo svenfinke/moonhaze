@@ -1,7 +1,6 @@
 import { IRepository } from "./repository";
 import { readFileSync, existsSync, writeFileSync } from "fs";
 import { GamestateType } from "../types/gamestateType";
-import { PlotFactory } from "../types/plots/plotType";
 
 export class FileRepository implements IRepository {
     filename: string
@@ -24,15 +23,6 @@ export class FileRepository implements IRepository {
         // Load static data
         gameStateData = jsonData;
 
-        // Load objects
-        var plotFactory = PlotFactory.getFactory();
-        jsonData.plots.forEach((column, y)=>{
-            gameStateData.plots[y] = [];
-            column.forEach((plot, x)=>{
-                gameStateData.plots[y][x] = plotFactory.create(plot.className, plot);
-            });
-        });
-
         return gameStateData;
     }
     save(gamestate: GamestateType){
@@ -42,17 +32,6 @@ export class FileRepository implements IRepository {
         // Copy data and replace everything that has to be re-written
         persistableData = Object.assign(persistableData, gamestate)
         persistableData.plots = [];
-
-        // Write Plots
-        gamestate.plots.forEach((column,y)=>{
-            persistableData.plots[y] = [];
-            column.forEach((plot, x)=>{
-                persistableData.plots[y][x] = {
-                    className: plot.className,
-                    args: plot
-                }
-            });
-        })
 
         writeFileSync(this.filename, JSON.stringify(persistableData));
     }

@@ -28,7 +28,6 @@ export class RenderService {
         term.left(2000)(farmname);
         term.left(2000).right(term.width - date.length)(date);
         term.down(1);
-        term.left(2000)(farmname);
         term.left(2000).right(term.width - date.length)(season);       
         term.down(2);
         
@@ -42,17 +41,6 @@ export class RenderService {
             term.down(1);
             term.left(2000);
             term(`${pad('       ', value.count.toString(), true)} | ${value.item.id}`);
-        });
-        
-        // Render Plot
-        term.restoreCursor();
-        gamestateService.data.plots.forEach((value)=>{
-            var line = '';
-            value.forEach((value)=>{
-                line += value.getGlyph();
-            })
-            term.left(2000).right(term.width - line.length).green(line);
-            term.down(1);
         });
 
         term("\n");
